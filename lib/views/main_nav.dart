@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/theme/app_colors.dart';
+import 'package:weather_app/views/home/cities.dart';
 import 'package:weather_app/views/home/cities_screen.dart';
 import 'package:weather_app/views/home/weather_view.dart';
 
