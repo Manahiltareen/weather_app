@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         cardColor: Colors.grey[900],
       ),
-      themeMode: themeCtrl.theme,
+      // themeMode: themeCtrl.theme,
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       defaultTransition: Transition.fade,
@@ -41,38 +41,5 @@ class MyApp extends StatelessWidget {
         );
       },
     );
-  }
-}
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'controllers/theme_controller.dart';
-import 'views/weather_view.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  final ThemeController themeCtrl = Get.put(ThemeController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Weather App',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        cardColor: Colors.white.withOpacity(0.9),
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
-        cardColor: Colors.grey[900],
-      ),
-      themeMode: themeCtrl.theme,
-      home: const WeatherView(),
-    ));
   }
 }

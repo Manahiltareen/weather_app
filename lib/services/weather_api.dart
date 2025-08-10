@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/models/waether_data.dart';
 import '../models/weather_model.dart';
 
 class WeatherApi {
@@ -31,4 +32,24 @@ class WeatherApi {
         .toList()
         .cast<WeatherModel>();
   }
+  static Future<WeatherData> fetchCurrentWeather(String city) async {
+    final uri = Uri.parse(
+      'https://api.openweathermap.org/data/2.5/weather?q=${city.trim()},PK&appid=$_apiKey&units=metric',
+    );
+
+    final res = await http.get(uri).timeout(const Duration(seconds: 15));
+
+    if (res.statusCode != 200) {
+      throw Exception('Failed to fetch weather: ${res.statusCode} ${res.reasonPhrase}');
+    }
+
+    final Map<String, dynamic> data = jsonDecode(res.body);
+
+    if (data['cod'] != 200) {
+      throw Exception(data['message'] ?? 'API error');
+    }
+
+    return WeatherData.fromJson(data);
+  }
+
 }
