@@ -319,7 +319,7 @@ class WeatherView extends GetView<WeatherController> {
           ),
         );
       }),
-      bottomNavigationBar: MainNav(),
+
     );
   }
 }

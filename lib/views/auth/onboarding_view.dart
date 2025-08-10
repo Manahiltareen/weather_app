@@ -45,7 +45,7 @@ class OnboardingView extends StatelessWidget {
               child:ElevatedButton(
                 onPressed: () {
                   // yahan SharedPreferences me save karo ke user ne onboarding dekh li
-                  Get.offAllNamed(AppRoutes.weather);
+                  Get.offAllNamed(AppRoutes.navbar);
                 },
                 child: Text("Get Started"),
               )

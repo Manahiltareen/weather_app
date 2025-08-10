@@ -29,7 +29,7 @@ class CitiesScreen extends StatelessWidget {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(20),
           itemCount: ctrl.cityWeathers.length,
           itemBuilder: (context, index) {
             final cityData = ctrl.cityWeathers[index];
@@ -39,7 +39,7 @@ class CitiesScreen extends StatelessWidget {
               ),
               margin: const EdgeInsets.only(bottom: 12),
               child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
+                contentPadding: const EdgeInsets.all(18),
                 title: Text(
                   cityData.cityName,
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -51,25 +51,35 @@ class CitiesScreen extends StatelessWidget {
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("${cityData.temp.toStringAsFixed(1)}°C",
+                    SizedBox(
+                      height: 24,
+                      child: Text(
+                        "${cityData.temp.toStringAsFixed(1)}°C",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                        )),
-                    Icon(
-                      cityData.main.toLowerCase().contains("cloud")
-                          ? Icons.cloud
-                          : Icons.wb_sunny,
-                      color: Colors.orange,
+                        ),
+                      ),
                     ),
-                  ],
+
+                    SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: Icon(
+                        cityData.main.toLowerCase().contains("cloud") ? Icons.cloud : Icons.wb_sunny,
+                        color: Colors.orange,
+                        size: 24,
+                      ),
+                    ),
+
+                ],
                 ),
               ),
             );
           },
         );
       }),
-      bottomNavigationBar: MainNav(),
+
     );
   }
 }
