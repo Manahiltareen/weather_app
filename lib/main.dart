@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/routes/app_pages.dart';
+import 'package:weather_app/routes/app_routes.dart';
 import 'package:weather_app/theme/dark_theme.dart';
 import 'package:weather_app/theme/light_theme.dart';
 
@@ -16,11 +17,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Pakistan Weather App',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
-      initialRoute: Routes.SPLASH,
+      title: 'Weather App',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: Colors.white.withOpacity(0.9),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        cardColor: Colors.grey[900],
+      ),
+      themeMode: themeCtrl.theme,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       defaultTransition: Transition.fade,
       builder: (context, child) {
@@ -31,5 +41,38 @@ class MyApp extends StatelessWidget {
         );
       },
     );
+  }
+}
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'controllers/theme_controller.dart';
+import 'views/weather_view.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  final ThemeController themeCtrl = Get.put(ThemeController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Weather App',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: Colors.white.withOpacity(0.9),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        cardColor: Colors.grey[900],
+      ),
+      themeMode: themeCtrl.theme,
+      home: const WeatherView(),
+    ));
   }
 }

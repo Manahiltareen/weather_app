@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/onboarding_controller.dart';
+import 'package:weather_app/routes/app_routes.dart';
 
 import '../../routes/app_pages.dart';
 
@@ -41,15 +42,14 @@ class OnboardingView extends StatelessWidget {
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: ElevatedButton(
+              child:ElevatedButton(
                 onPressed: () {
-                  Get.offAllNamed(Routes.WEATHER);
+                  // yahan SharedPreferences me save karo ke user ne onboarding dekh li
+                  Get.offAllNamed(AppRoutes.weather);
                 },
-                child: const SizedBox(
-                  height: 48,
-                  child: Center(child: Text('Get Started')),
-                ),
-              ),
+                child: Text("Get Started"),
+              )
+
             ),
           ],
         ),

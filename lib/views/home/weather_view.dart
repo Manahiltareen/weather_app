@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
@@ -14,16 +15,16 @@ class WeatherView extends GetView<WeatherController> {
   Widget build(BuildContext context) {
     final ctrl = Get.put(WeatherController());
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pakistan Weather App'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () => ctrl.fetch(ctrl.city.value),
-            icon: const Icon(Icons.refresh),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Pakistan Weather App'),
+      //   centerTitle: true,
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () => ctrl.fetch(ctrl.city.value),
+      //       icon: const Icon(Icons.refresh),
+      //     )
+      //   ],
+      // ),
       body: Obx(() {
         if (ctrl.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -77,7 +78,8 @@ class WeatherView extends GetView<WeatherController> {
                       child: Row(
                         children: [
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('${ctrl.tempInC(current.temp)} °C', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
+                            Text('${current.temp.toStringAsFixed(1)} °C',
+                                style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 8),
                             Text('${toBeginningOfSentenceCase(current.main) ?? current.main}', style: const TextStyle(fontSize: 18)),
                             const SizedBox(height: 4),
@@ -108,7 +110,8 @@ class WeatherView extends GetView<WeatherController> {
                           child: ForecastCard(
                             time: DateFormat.j().format(item.dateTime),
                             icon: item.main.toLowerCase().contains('cloud') ? Icons.cloud : Icons.wb_sunny,
-                            temp: '${ctrl.tempInC(item.temp)}°C',
+                            temp: '${item.temp.toStringAsFixed(1)}°C',
+
                           ),
                         );
                       },
@@ -118,13 +121,16 @@ class WeatherView extends GetView<WeatherController> {
                   const SizedBox(height: 20),
 
                   // Additional Info
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AdditionalInfoCard(icon: Icons.water_drop_outlined, label: 'Humidity', value: '${current.humidity}%'),
-                      AdditionalInfoCard(icon: Icons.air, label: 'Wind', value: '${current.wind} m/s'),
-                      AdditionalInfoCard(icon: Icons.speed, label: 'Pressure', value: '${current.pressure} hPa'),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection:Axis.horizontal ,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AdditionalInfoCard(icon: Icons.water_drop_outlined, label: 'Humidity', value: '${current.humidity}%'),
+                        AdditionalInfoCard(icon: Icons.air, label: 'Wind', value: '${current.wind} m/s'),
+                        AdditionalInfoCard(icon: Icons.speed, label: 'Pressure', value: '${current.pressure} hPa'),
+                      ],
+                    ),
                   ),
                 ],
               ),

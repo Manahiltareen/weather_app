@@ -2,14 +2,13 @@ import 'package:get/get.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_api.dart';
 
-
 class WeatherController extends GetxController {
   final city = 'Karachi'.obs;
   final isLoading = false.obs;
   final error = ''.obs;
   final forecasts = <WeatherModel>[].obs;
 
-  // Pakistan cities list (you can expand)
+  // Pakistan cities list
   final List<String> pakCities = [
     'Karachi',
     'Lahore',
@@ -42,6 +41,4 @@ class WeatherController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  String tempInC(double k) => (k - 273.15).toStringAsFixed(1);
 }
