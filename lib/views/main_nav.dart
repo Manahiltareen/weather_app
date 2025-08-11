@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/theme/app_colors.dart';
-import 'package:weather_app/views/home/cities.dart';
-import 'package:weather_app/views/home/cities_screen.dart';
+
 import 'package:weather_app/views/home/weather_view.dart';
-import 'package:weather_app/views/widgets/animated_cards/showcase.dart';
+import 'package:weather_app/views/home/all_cities_view.dart';
 
 class MainNav extends StatefulWidget {
   const MainNav({super.key});
@@ -17,8 +16,7 @@ class _MainNavState extends State<MainNav> {
 
   final _screens = [
     const WeatherView(),
-    // const CitiesScreen(),
-    Showcase()
+   const AllCitiesView()
   ];
 
 

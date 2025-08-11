@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'my_data.dart';
+import 'my_data.dart';  // Your DummyData and BackgroundStyle classes
 
 enum MyCardTheme { dark, light }
 
@@ -15,32 +16,29 @@ class CardSummary extends StatelessWidget {
     this.isOpen = false,
   });
 
-
   Color _getBackgroundColor(BackgroundStyle background) {
     if (background is SolidColorBackground) {
       return background.color;
     }
-
     if (background is GradientBackground) {
       return background.colors.first;
     }
-
     return Colors.black;
   }
+
   Color get mainTextColor {
     if (theme == MyCardTheme.dark) {
       return Colors.white;
     }
-
     if (dummy.bgColor is SolidColorBackground) {
       return (dummy.bgColor as SolidColorBackground).color;
     }
-
     if (dummy.bgColor is GradientBackground) {
       return (dummy.bgColor as GradientBackground).colors.first;
     }
     return Colors.black;
   }
+
   Color get secondaryTextColor =>
       (theme == MyCardTheme.dark) ? Color(0xff61849c) : Color(0xFF838383);
   Color get separatorColor =>
@@ -71,15 +69,15 @@ class CardSummary extends StatelessWidget {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: _buildLogo(),
+                    child: _buildIconLarge(),
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: _buildSmallLogo(),
+                    child: _buildIconSmall(),
                   ),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Image.asset('images/me.png', height: 90, width: 90),
+                    child: Icon(Icons.location_city, size: 90, color: isLight ? Colors.black38 : Colors.white54),
                   ),
                 ],
               ),
@@ -91,14 +89,13 @@ class CardSummary extends StatelessWidget {
     );
   }
 
-  _getBackgroundDecoration() {
+  BoxDecoration _getBackgroundDecoration() {
     if (isLight) {
       return BoxDecoration(
         borderRadius: BorderRadius.circular(4.0),
         color: Colors.white,
       );
     }
-
     return BoxDecoration(
       borderRadius: BorderRadius.circular(4.0),
       color: dummy.bgColor is SolidColorBackground
@@ -110,30 +107,17 @@ class CardSummary extends StatelessWidget {
     );
   }
 
-  _buildLogoHeader() {
-    if (isLight) {
-      return Text(
-        'Imran mani'.toUpperCase(),
-        style: TextStyle(
-          color:_getBackgroundColor(dummy.bgColor),
-          fontFamily: 'OpenSans',
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
-        ),
-      );
-    } else {
-      return Text(
-        'Imran mani'.toUpperCase(),
-        style: TextStyle(
-          color: separatorColor,
-          fontFamily: 'OpenSans',
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
-        ),
-      );
-    }
+  Widget _buildLogoHeader() {
+    return Text(
+      'Weather'.toUpperCase(),
+      style: TextStyle(
+        color: isLight ? _getBackgroundColor(dummy.bgColor) : separatorColor,
+        fontFamily: 'OpenSans',
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.5,
+      ),
+    );
   }
 
   Widget _buildSeparationLine() {
@@ -144,7 +128,7 @@ class CardSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildTicketHeader(context) {
+  Widget _buildTicketHeader(BuildContext context) {
     var headerStyle = TextStyle(
       fontFamily: 'OpenSans',
       fontWeight: FontWeight.bold,
@@ -154,52 +138,51 @@ class CardSummary extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(dummy.platformName.toUpperCase(), style: headerStyle),
-        Text(dummy.userName, style: headerStyle),
+        Text(dummy.platformName.toUpperCase(), style: headerStyle), // city name
+        Text(dummy.userName, style: headerStyle), // weather main
       ],
     );
   }
 
-  Widget _buildLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Image.asset(
-        dummy.logo,
-        height: 80,
-        width: 80,
-        color: isLight ? null : Colors.white,
-      ),
-    );
+  Widget _buildIconLarge() {
+    if (dummy.weatherIcon != null) {
+      return Icon(
+        dummy.weatherIcon,
+        size: 80,
+        color: dummy.iconColor ?? (isLight ? Colors.black87 : Colors.white),
+      );
+    }
+    return SizedBox.shrink();
   }
 
-  Widget _buildSmallLogo() {
-    final littleLogo = Image.asset(
-      dummy.logo,
-      height: 20,
-      width: 20,
-      fit: BoxFit.contain,
-      color: isLight ? null : Colors.white,
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        SizedBox(
-          width: 20,
-          height: 58,
-          child: isLight
-              ? littleLogo
-              : _AnimatedSlideToRight(isOpen: isOpen, child: littleLogo),
-        ),
-        if(isLight)
-        Text("Check Now", textAlign: TextAlign.center, style: bodyTextStyle),
-      ],
-    );
+  Widget _buildIconSmall() {
+    if (dummy.weatherIcon != null) {
+      final iconWidget = Icon(
+        dummy.weatherIcon,
+        size: 20,
+        color: dummy.iconColor ?? (isLight ? Colors.black54 : Colors.white70),
+      );
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+            height: 58,
+            child: isLight
+                ? iconWidget
+                : _AnimatedSlideToRight(isOpen: isOpen, child: iconWidget),
+          ),
+          if (isLight)
+            Text("Check Now", textAlign: TextAlign.center, style: bodyTextStyle),
+        ],
+      );
+    }
+    return SizedBox.shrink();
   }
 
   Widget _buildBottomIcon() {
-    IconData icon =
-        isLight ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up;
+    IconData icon = isLight ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up;
     return Icon(
       icon,
       color: isLight ? separatorColor : Colors.white,

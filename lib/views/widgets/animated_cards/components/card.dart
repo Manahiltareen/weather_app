@@ -22,7 +22,7 @@ class _MyCardState extends State<MyCard> {
     dummy: widget.dummyData,
   );
   late CardDetails middleCard = CardDetails(widget.dummyData);
-  // late BottomLinks bottomCard = BottomLinks(dummyData: widget.dummyData,);
+  late BottomLinks bottomCard = BottomLinks(dummyData: widget.dummyData,);
   bool _isOpen = false;
 
   Widget get backCard => Container(
@@ -45,7 +45,7 @@ class _MyCardState extends State<MyCard> {
     return [
       FoldEntry(height: 160.0, front: topCard),
       FoldEntry(height: 160.0, front: middleCard, back: frontCard),
-      // FoldEntry(height: 80.0, front: bottomCard, back: backCard),
+      FoldEntry(height: 80.0, front: bottomCard, back: backCard),
     ];
   }
 

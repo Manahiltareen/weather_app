@@ -124,16 +124,17 @@ class GradientBackground extends BackgroundStyle {
       );
 }
 
-// Single DummyData class for both social & weather
+
 class DummyData {
-  final String platformName; // or cityName for weather
-  final String userName; // or empty or some placeholder for weather
-  final String logo; // image path or icon path
+  final String platformName; // or cityName
+  final String userName; // or weather main
+  final String logo;
   final BackgroundStyle bgColor;
-  final Map<String, dynamic> data; // can hold followers or temp etc
-  final String bio; // description or bio
+  final Map<String, dynamic> data;
+  final String bio;
   final String linkText;
   final IconData? weatherIcon;
+  final Color? iconColor;       // <-- Add this
   final String? weatherMain;
   final String? dateTime;
 
@@ -146,6 +147,7 @@ class DummyData {
     required this.bio,
     required this.linkText,
     this.weatherIcon,
+    this.iconColor,          // <-- Add this
     this.weatherMain,
     this.dateTime,
   });
@@ -154,46 +156,61 @@ class DummyData {
 class DemoData {
   final List<DummyData> _dummyData = [];
 
-  // Method to create DummyData from WeatherData
+  DemoData(List<WeatherData> weatherDataList, bool isDarkMode) {
+    _dummyData.addAll(
+      weatherDataList.map((weather) => _createDummyDataFromWeather(weather, isDarkMode)).toList(),
+    );
+  }
+
+  List<DummyData> get dummyData => _dummyData;
+
   DummyData _createDummyDataFromWeather(WeatherData weather, bool isDarkMode) {
-    IconData? weatherIcon;
+    IconData weatherIcon;
+    Color iconColor;
     BackgroundStyle bgColor;
     String bio;
 
     switch (weather.main.toLowerCase()) {
       case 'clouds':
         weatherIcon = Icons.cloud;
+        iconColor = isDarkMode ? Colors.grey[300]! : Colors.blueGrey[700]!;
         bgColor = isDarkMode
-            ? SolidColorBackground(Colors.grey[800]!)
-            : GradientBackground(colors: [Colors.grey[400]!, Colors.grey[600]!]);
-        bio = 'Overcast skies with ${weather.main.toLowerCase()} in ${weather.cityName}.';
+            ? SolidColorBackground(Color(0xFF2C3E50)) // dark blue-grey
+            : GradientBackground(colors: [Color(0xFFa1c4fd), Color(0xFFc2e9fb)]); // soft blue gradient
+        bio = 'Overcast skies with clouds in ${weather.cityName}.';
         break;
+
       case 'rain':
         weatherIcon = Icons.water_drop;
+        iconColor = isDarkMode ? Colors.lightBlue[300]! : Colors.blue[800]!;
         bgColor = isDarkMode
-            ? SolidColorBackground(Colors.blueGrey[800]!)
-            : GradientBackground(colors: [Colors.blue[400]!, Colors.blue[700]!]);
-        bio = 'Expect ${weather.main.toLowerCase()} showers in ${weather.cityName}.';
+            ? SolidColorBackground(Color(0xFF34495E)) // dark slate blue
+            : GradientBackground(colors: [Color(0xFF667eea), Color(0xFF764ba2)]); // purple-blue gradient
+        bio = 'Expect rain showers in ${weather.cityName}.';
         break;
+
       case 'clear':
         weatherIcon = Icons.wb_sunny;
+        iconColor = isDarkMode ? Colors.amber[300]! : Colors.orange[600]!;
         bgColor = isDarkMode
-            ? SolidColorBackground(Colors.yellow[900]!)
-            : GradientBackground(colors: [Colors.yellow[400]!, Colors.orange[600]!]);
-        bio = 'Bright and ${weather.main.toLowerCase()} skies in ${weather.cityName}.';
+            ? SolidColorBackground(Color(0xFFF39C12)) // dark amber
+            : GradientBackground(colors: [Color(0xFFFFE259), Color(0xFFFFA751)]); // warm yellow-orange gradient
+        bio = 'Bright and clear skies in ${weather.cityName}.';
         break;
+
       default:
-        weatherIcon = Icons.wb_cloudy; // Replaced Icons.weather_mixed
+        weatherIcon = Icons.wb_cloudy;
+        iconColor = isDarkMode ? Colors.grey[400]! : Colors.grey[700]!;
         bgColor = isDarkMode
-            ? SolidColorBackground(Colors.grey[800]!)
-            : SolidColorBackground(Colors.grey[300]!);
+            ? SolidColorBackground(Color(0xFF34495E))
+            : SolidColorBackground(Color(0xFFBDC3C7));
         bio = 'Weather in ${weather.cityName}: ${weather.main}.';
     }
 
     return DummyData(
       platformName: weather.cityName,
       userName: weather.main,
-      logo: weatherIcon.toString(), // Store icon name as string (e.g., "Icons.wb_sunny")
+      logo: weatherIcon.toString(),
       bgColor: bgColor,
       data: {
         "Temp": "${weather.temp.toStringAsFixed(1)}°C",
@@ -204,21 +221,13 @@ class DemoData {
       bio: bio,
       linkText: 'More details',
       weatherIcon: weatherIcon,
+      iconColor: iconColor,
       weatherMain: weather.main,
       dateTime: DateFormat('MMM d, yyyy • h:mm a').format(weather.dateTime),
     );
   }
 
-  // Constructor to initialize with WeatherData list
-  DemoData(List<WeatherData> weatherDataList, bool isDarkMode) {
-    _dummyData.addAll(
-      weatherDataList.map((weather) => _createDummyDataFromWeather(weather, isDarkMode)).toList(),
-    );
-  }
-
-  get dummyData => _dummyData;
-
-  getBoardingPass(int index) {
+  DummyData getBoardingPass(int index) {
     return _dummyData.elementAt(index);
   }
 }
