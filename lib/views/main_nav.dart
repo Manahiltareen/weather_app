@@ -1,6 +1,6 @@
+
 import 'package:flutter/material.dart';
 import 'package:weather_app/theme/app_colors.dart';
-
 import 'package:weather_app/views/home/weather_view.dart';
 import 'package:weather_app/views/home/all_cities_view.dart';
 
@@ -16,9 +16,8 @@ class _MainNavState extends State<MainNav> {
 
   final _screens = [
     const WeatherView(),
-   const AllCitiesView()
+    const AllCitiesView(),
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,54 +26,23 @@ class _MainNavState extends State<MainNav> {
     return Scaffold(
       backgroundColor: AppColors.gradientCloudyEnd,
       body: _screens[_currentIndex],
-
-      // floating, rounded container bottom nav
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark ? Color(0xFF2C2C34) : Colors.white,
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: isDark
-                    ? Colors.black.withOpacity(0.7)
-                    : Colors.grey.withOpacity(0.3),
-                blurRadius: 10,
-                offset: Offset(0, 5),
-              ),
-            ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
+        backgroundColor: isDark ? const Color(0xFF2C2C34) : Colors.white,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: isDark ? Colors.white70 : Colors.grey,
+        elevation: 8,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, size: 30),
+            label: 'Home',
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Home Icon
-              GestureDetector(
-                onTap: () => setState(() => _currentIndex = 0),
-                child: Icon(
-                  Icons.home,
-                  size: 30,
-                  color: _currentIndex == 0
-                      ? Colors.orange
-                      : (isDark ? Colors.white70 : Colors.grey),
-                ),
-              ),
-
-              // Cities Icon
-              GestureDetector(
-                onTap: () => setState(() => _currentIndex = 1),
-                child: Icon(
-                  Icons.location_city,
-                  size: 30,
-                  color: _currentIndex == 1
-                      ? Colors.orange
-                      : (isDark ? Colors.white70 : Colors.grey),
-                ),
-              ),
-            ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_city, size: 30),
+            label: 'Cities',
           ),
-        ),
+        ],
       ),
     );
   }
